@@ -6,7 +6,12 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
     formats: ["image/avif", "image/webp"],
   },
 };
