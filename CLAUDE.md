@@ -1,7 +1,12 @@
 # Wedding Photography Website — Claude Code Rules
 
+## Design Reference
+**ALWAYS read `DESIGN_GUIDE.md` before implementing any public-facing page or component.**
+It contains the exact layout spec, typography rules, color usage rules, and animation guidelines.
+Ignoring it produces AI slop. Following it produces a premium editorial site.
+
 ## Project
-Premium wedding photography website inspired by caroweiss.com. Built with Next.js 14 (App Router), Tailwind CSS, shadcn/ui, PostgreSQL, Prisma ORM. Single repo — Next.js handles both frontend and API routes. No separate backend server.
+Premium wedding photography website inspired by caroweiss.com. Built with Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui, PostgreSQL, Prisma ORM v7, Auth.js v5. Single repo — Next.js handles both frontend and API routes. No separate backend server.
 
 ## Stack
 - **Framework**: Next.js 14 App Router (TypeScript)
