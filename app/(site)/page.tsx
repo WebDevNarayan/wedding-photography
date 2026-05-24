@@ -34,18 +34,30 @@ const testimonials = [
 ];
 
 export default async function HomePage() {
-  const [settings, stories] = await Promise.all([
+  const [settings, stories, featuredGalleries] = await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: 1 } }),
     prisma.story.findMany({
       where: { published: true },
       orderBy: { publishedAt: "desc" },
       take: 3,
     }),
+    prisma.gallery.findMany({
+      where: { featured: true, published: true },
+      orderBy: { date: "desc" },
+      take: 5,
+      select: { coverImageUrl: true },
+    }),
   ]);
+
+  const heroImageUrl = featuredGalleries[0]?.coverImageUrl;
+  const navImages = featuredGalleries.slice(1).map((g) => g.coverImageUrl);
 
   return (
     <>
-      <Hero headline={settings?.heroHeadline ?? "Love Stories, Beautifully Told"} />
+      <Hero
+        headline={settings?.heroHeadline ?? "Love Stories, Beautifully Told"}
+        imageUrl={heroImageUrl}
+      />
 
       {/* Tagline strip */}
       <div className="flex items-center justify-center py-10 bg-background">
@@ -54,7 +66,7 @@ export default async function HomePage() {
         </p>
       </div>
 
-      <SectionNavBlocks />
+      <SectionNavBlocks images={navImages} />
 
       {/* About teaser */}
       <section className="bg-background py-24 md:py-32">

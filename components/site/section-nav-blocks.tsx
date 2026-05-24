@@ -5,31 +5,11 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 
-const blocks = [
-  {
-    label: "Work",
-    href: "/portfolio",
-    image:
-      "https://res.cloudinary.com/demo/image/upload/v1/samples/landscapes/nature-italy.jpg",
-  },
-  {
-    label: "Journal",
-    href: "/journal",
-    image:
-      "https://res.cloudinary.com/demo/image/upload/v1/samples/landscapes/girl-urban-view.jpg",
-  },
-  {
-    label: "Investment",
-    href: "/investment",
-    image:
-      "https://res.cloudinary.com/demo/image/upload/v1/samples/landscapes/beach-boat.jpg",
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-    image:
-      "https://res.cloudinary.com/demo/image/upload/v1/samples/people/smiling-man.jpg",
-  },
+const NAV_BLOCKS = [
+  { label: "Work", href: "/portfolio" },
+  { label: "Journal", href: "/journal" },
+  { label: "Investment", href: "/investment" },
+  { label: "Contact", href: "/contact" },
 ];
 
 function Block({
@@ -39,7 +19,7 @@ function Block({
 }: {
   label: string;
   href: string;
-  image: string;
+  image?: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
   const { scrollYProgress } = useScroll({
@@ -52,11 +32,13 @@ function Block({
     <Link
       ref={ref}
       href={href}
-      className="group relative flex h-[60vh] w-full items-center justify-center overflow-hidden"
+      className="group relative flex h-[60vh] w-full items-center justify-center overflow-hidden bg-muted"
     >
-      <motion.div style={{ y }} className="absolute inset-0 scale-125">
-        <Image src={image} alt="" fill className="object-cover" />
-      </motion.div>
+      {image && (
+        <motion.div style={{ y }} className="absolute inset-0 scale-125">
+          <Image src={image} alt="" fill className="object-cover" />
+        </motion.div>
+      )}
       <div className="absolute inset-0 bg-black/40 transition-colors duration-500 group-hover:bg-black/55" />
       <span className="relative z-10 font-heading text-5xl md:text-6xl font-light uppercase tracking-widest text-white transition-transform duration-500 group-hover:scale-95">
         {label}
@@ -65,11 +47,11 @@ function Block({
   );
 }
 
-export function SectionNavBlocks() {
+export function SectionNavBlocks({ images = [] }: { images?: string[] }) {
   return (
     <div className="flex flex-col">
-      {blocks.map((b) => (
-        <Block key={b.href} {...b} />
+      {NAV_BLOCKS.map((b, i) => (
+        <Block key={b.href} {...b} image={images[i]} />
       ))}
     </div>
   );

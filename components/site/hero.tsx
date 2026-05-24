@@ -18,19 +18,18 @@ export function Hero({ headline, imageUrl }: HeroProps) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
 
   return (
-    <section ref={ref} className="relative h-screen overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0 scale-110">
-        <Image
-          src={
-            imageUrl ??
-            "https://res.cloudinary.com/demo/image/upload/v1/samples/landscapes/nature-italy.jpg"
-          }
-          alt=""
-          fill
-          className="object-cover"
-          priority
-        />
-      </motion.div>
+    <section ref={ref} className="relative h-screen overflow-hidden bg-stone-900">
+      {imageUrl && (
+        <motion.div style={{ y }} className="absolute inset-0 scale-110">
+          <Image
+            src={imageUrl}
+            alt=""
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+      )}
       <div className="absolute inset-0 bg-black/35" />
       <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
         <h1 className="font-heading text-[72px] md:text-[96px] lg:text-[120px] font-light leading-none tracking-tight text-white max-w-5xl">
