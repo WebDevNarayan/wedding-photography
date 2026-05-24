@@ -1,0 +1,17 @@
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing required environment variable: ${key}`);
+  return value;
+}
+
+export const env = {
+  DATABASE_URL: requireEnv("DATABASE_URL"),
+  NEXTAUTH_SECRET: requireEnv("NEXTAUTH_SECRET"),
+  NEXTAUTH_URL: requireEnv("NEXTAUTH_URL"),
+  CLOUDINARY_CLOUD_NAME: requireEnv("CLOUDINARY_CLOUD_NAME"),
+  CLOUDINARY_API_KEY: requireEnv("CLOUDINARY_API_KEY"),
+  CLOUDINARY_API_SECRET: requireEnv("CLOUDINARY_API_SECRET"),
+  RESEND_API_KEY: requireEnv("RESEND_API_KEY"),
+  ADMIN_EMAIL: requireEnv("ADMIN_EMAIL"),
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: requireEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"),
+} as const;
