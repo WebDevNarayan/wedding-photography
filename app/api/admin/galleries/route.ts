@@ -13,7 +13,7 @@ const createSchema = z.object({
   category: z.enum(CATEGORIES),
   location: z.string().optional(),
   date: z.string().optional(),
-  coverImageUrl: z.string().url().optional(),
+  coverImageUrl: z.string().url(),
   published: z.boolean().default(false),
   featured: z.boolean().default(false),
 });
@@ -52,8 +52,8 @@ export async function POST(req: NextRequest) {
     data: {
       title,
       slug: finalSlug,
+      coverImageUrl,
       date: date ? new Date(date) : undefined,
-      ...(coverImageUrl !== undefined && { coverImageUrl }),
       ...rest,
     },
   });
