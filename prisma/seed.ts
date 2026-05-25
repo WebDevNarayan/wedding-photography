@@ -25,12 +25,14 @@ const IMAGES = {
 
 async function main() {
   // ── Admin user ──────────────────────────────────────────────────────────
-  const hashedPassword = await bcrypt.hash("Admin1234!", 12);
+  const adminEmail = process.env.ADMIN_SEED_EMAIL ?? "admin@site.com";
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? "Admin1234!";
+  const hashedPassword = await bcrypt.hash(adminPassword, 12);
   await prisma.user.upsert({
-    where: { email: "admin@site.com" },
+    where: { email: adminEmail },
     update: {},
     create: {
-      email: "admin@site.com",
+      email: adminEmail,
       name: "Admin",
       hashedPassword,
       role: "ADMIN",
