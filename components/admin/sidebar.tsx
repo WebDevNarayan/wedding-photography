@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
@@ -27,9 +28,13 @@ export function AdminSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 flex w-60 flex-col border-r border-border bg-background">
       <div className="flex h-16 items-center border-b border-border px-6">
-        <span className="font-heading text-lg font-light tracking-wide">
-          Cara Wei
-        </span>
+        <Image
+          src="/logo.png"
+          alt="Wedding Moment Photography"
+          width={630}
+          height={475}
+          className="h-12 w-auto object-contain"
+        />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">

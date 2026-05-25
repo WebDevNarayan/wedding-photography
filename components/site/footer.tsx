@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
 const NAV_ITEMS = [
@@ -21,11 +22,14 @@ export async function SiteFooter() {
 
           {/* Logo + tagline */}
           <div className="space-y-5">
-            <Link
-              href="/"
-              className="block font-heading text-2xl font-light tracking-[0.25em] uppercase text-foreground"
-            >
-              Cara Wei
+            <Link href="/" className="block">
+              <Image
+                src="/logo.png"
+                alt="Wedding Moment Photography"
+                width={630}
+                height={475}
+                className="h-24 w-auto object-contain"
+              />
             </Link>
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground leading-relaxed">
               Documentary Wedding<br />Photography

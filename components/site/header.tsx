@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -60,14 +61,15 @@ export function SiteHeader() {
         )}
       >
         {/* Logo */}
-        <Link
-          href="/"
-          className={cn(
-            "font-heading text-sm font-light tracking-[0.28em] uppercase transition-colors duration-300 md:text-base",
-            lightText ? "text-white" : "text-foreground"
-          )}
-        >
-          Cara Wei
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.png"
+            alt="Wedding Moment Photography"
+            width={630}
+            height={475}
+            className="h-16 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop navigation */}
