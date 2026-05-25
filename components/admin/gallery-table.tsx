@@ -36,7 +36,7 @@ type Gallery = {
   category: string;
   published: boolean;
   featured: boolean;
-  date: string | null;
+  date: Date | string | null;
   _count: { images: number };
 };
 
