@@ -1,23 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
 
-const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-const apiKey = process.env.CLOUDINARY_API_KEY;
-const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-if (!cloudName || !apiKey || !apiSecret) {
-  throw new Error(
-    `Missing Cloudinary env vars: ${[
-      !cloudName && "CLOUDINARY_CLOUD_NAME",
-      !apiKey && "CLOUDINARY_API_KEY",
-      !apiSecret && "CLOUDINARY_API_SECRET",
-    ]
-      .filter(Boolean)
-      .join(", ")}`
-  );
-}
-
-cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
-
 type UploadResult = {
   url: string;
   blurDataUrl: string;
@@ -27,6 +9,24 @@ export async function uploadImage(
   file: File | Buffer,
   folder: string
 ): Promise<UploadResult> {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error(
+      `Missing Cloudinary env vars: ${[
+        !cloudName && "CLOUDINARY_CLOUD_NAME",
+        !apiKey && "CLOUDINARY_API_KEY",
+        !apiSecret && "CLOUDINARY_API_SECRET",
+      ]
+        .filter(Boolean)
+        .join(", ")}`
+    );
+  }
+
+  cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
+
   const buffer =
     file instanceof File ? Buffer.from(await file.arrayBuffer()) : file;
 
