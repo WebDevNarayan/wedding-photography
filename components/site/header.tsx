@@ -52,7 +52,8 @@ export function SiteHeader() {
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-40 transition-all duration-500",
-          "flex h-14 items-center px-6 md:h-20 md:px-12 lg:px-16",
+          "flex h-14 items-center px-6 md:px-12 lg:px-16",
+          scrolled ? "md:h-16" : "md:h-20",
           headerSolid
             ? "bg-background/95 backdrop-blur-md border-b border-border/60"
             : "bg-transparent"

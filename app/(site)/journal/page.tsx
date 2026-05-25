@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { FadeIn } from "@/components/shared/fade-in";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -41,9 +42,10 @@ export default async function JournalPage() {
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-            {stories.map((story) => (
+            {stories.map((story, i) => (
+              <FadeIn key={story.id} delay={(i % 2) * 0.08}>
               <Link
-                key={story.id}
+                href={`/journal/${story.slug}`}
                 href={`/journal/${story.slug}`}
                 className="group block space-y-4"
               >
@@ -77,6 +79,7 @@ export default async function JournalPage() {
                   </span>
                 </div>
               </Link>
+              </FadeIn>
             ))}
           </div>
         )}

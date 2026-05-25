@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FadeIn } from "@/components/shared/fade-in";
 
 type GalleryItem = {
   id: string;
@@ -86,24 +87,26 @@ export function PortfolioFeed({ galleries }: { galleries: GalleryItem[] }) {
       {blocks.map((block, i) => {
         if (block.type === "full") {
           return (
-            <div key={block.gallery.id}>
+            <FadeIn key={block.gallery.id}>
               <GalleryCard gallery={block.gallery} aspectClass="aspect-[16/9]" />
-            </div>
+            </FadeIn>
           );
         }
         if (block.type === "centered") {
           return (
-            <div key={block.gallery.id} className="w-[62%] mx-auto">
+            <FadeIn key={block.gallery.id} className="w-[62%] mx-auto">
               <GalleryCard gallery={block.gallery} aspectClass="aspect-[3/4]" />
-            </div>
+            </FadeIn>
           );
         }
         return (
-          <div key={i} className="grid grid-cols-2 gap-6 md:gap-10">
-            {block.galleries.map((g) => (
-              <GalleryCard key={g.id} gallery={g} aspectClass="aspect-[3/4]" />
-            ))}
-          </div>
+          <FadeIn key={i}>
+            <div className="grid grid-cols-2 gap-6 md:gap-10">
+              {block.galleries.map((g) => (
+                <GalleryCard key={g.id} gallery={g} aspectClass="aspect-[3/4]" />
+              ))}
+            </div>
+          </FadeIn>
         );
       })}
     </div>

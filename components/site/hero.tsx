@@ -32,9 +32,14 @@ export function Hero({ headline, imageUrl }: HeroProps) {
       )}
       <div className="absolute inset-0 bg-black/35" />
       <div className="relative z-10 flex h-full items-center justify-center px-6 text-center">
-        <h1 className="font-heading text-[72px] md:text-[96px] lg:text-[120px] font-light leading-none tracking-tight text-white max-w-5xl">
+        <motion.h1
+          className="font-heading text-[72px] md:text-[96px] lg:text-[120px] font-light leading-none tracking-tight text-white max-w-5xl"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           {headline}
-        </h1>
+        </motion.h1>
       </div>
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
         <span className="font-sans text-xs uppercase tracking-[0.3em] text-white/60">

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -32,10 +33,14 @@ export function GalleryDetailImages({ images }: { images: GalleryImage[] }) {
         {images.map((image, i) => {
           const layout = LAYOUT[i % LAYOUT.length];
           return (
-            <button
+            <motion.button
               key={image.id}
               onClick={() => setLightboxIndex(i)}
               className={`block ${layout.col} ${layout.aspect} relative overflow-hidden cursor-zoom-in group`}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: (i % 6) * 0.05 }}
             >
               <Image
                 src={image.url}
@@ -46,7 +51,7 @@ export function GalleryDetailImages({ images }: { images: GalleryImage[] }) {
                 blurDataURL={image.blurDataUrl ?? undefined}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 60vw"
               />
-            </button>
+            </motion.button>
           );
         })}
       </div>

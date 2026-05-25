@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Hero } from "@/components/site/hero";
 import { SectionNavBlocks } from "@/components/site/section-nav-blocks";
+import { FadeIn } from "@/components/shared/fade-in";
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -72,11 +73,11 @@ export default async function HomePage() {
       />
 
       {/* Tagline strip */}
-      <div className="flex items-center justify-center py-10 bg-background">
+      <FadeIn className="flex items-center justify-center py-10 bg-background">
         <p className="font-sans text-xs uppercase tracking-[0.3em] text-muted-foreground">
           Timeless · Unposed · Documentary
         </p>
-      </div>
+      </FadeIn>
 
       <SectionNavBlocks images={navImages} />
 
@@ -84,7 +85,7 @@ export default async function HomePage() {
       <section className="bg-background py-24 md:py-32">
         <div className="mx-auto max-w-6xl px-6 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-20 items-center">
-            <div className="md:col-span-2">
+            <FadeIn className="md:col-span-2">
               <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src={
@@ -96,8 +97,8 @@ export default async function HomePage() {
                   className="object-cover"
                 />
               </div>
-            </div>
-            <div className="md:col-span-3 space-y-6">
+            </FadeIn>
+            <FadeIn delay={0.1} className="md:col-span-3 space-y-6">
               <h2 className="font-heading text-3xl md:text-4xl font-normal tracking-tight">
                 A photographer who listens before she shoots.
               </h2>
@@ -120,7 +121,7 @@ export default async function HomePage() {
               >
                 Meet Me →
               </Link>
-            </div>
+            </FadeIn>
           </div>
         </div>
       </section>
@@ -129,8 +130,9 @@ export default async function HomePage() {
       <section className="bg-muted py-24 md:py-32">
         <div className="mx-auto max-w-6xl px-6 md:px-12 lg:px-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
-            {testimonials.map((t) => (
-              <blockquote key={t.name} className="space-y-4">
+            {testimonials.map((t, i) => (
+              <FadeIn key={t.name} delay={i * 0.08}>
+              <blockquote className="space-y-4">
                 <p className="font-heading italic text-xl md:text-2xl font-light leading-relaxed">
                   &ldquo;{t.quote}&rdquo;
                 </p>
@@ -143,6 +145,7 @@ export default async function HomePage() {
                   </p>
                 </footer>
               </blockquote>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -164,9 +167,10 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-              {stories.map((story) => (
+              {stories.map((story, i) => (
+                <FadeIn key={story.id} delay={i * 0.08}>
                 <Link
-                  key={story.id}
+                  href={`/journal/${story.slug}`}
                   href={`/journal/${story.slug}`}
                   className="group block space-y-4"
                 >
@@ -195,6 +199,7 @@ export default async function HomePage() {
                     </p>
                   </div>
                 </Link>
+                </FadeIn>
               ))}
             </div>
           </div>
@@ -203,7 +208,7 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="bg-muted py-24 md:py-32">
-        <div className="mx-auto max-w-2xl px-6 text-center space-y-8">
+        <FadeIn className="mx-auto max-w-2xl px-6 text-center space-y-8">
           <h2 className="font-heading text-3xl md:text-5xl font-normal tracking-tight">
             Let&rsquo;s make something beautiful.
           </h2>
@@ -213,11 +218,11 @@ export default async function HomePage() {
           </p>
           <Link
             href="/contact"
-            className="inline-block bg-foreground text-background font-sans text-xs uppercase tracking-[0.2em] px-10 py-4 hover:bg-primary transition-colors"
+            className="inline-block bg-foreground text-background font-sans text-xs uppercase tracking-[0.2em] px-10 py-4 hover:opacity-90 transition-opacity"
           >
             Get in Touch
           </Link>
-        </div>
+        </FadeIn>
       </section>
     </>
   );
