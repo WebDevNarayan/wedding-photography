@@ -171,7 +171,6 @@ export default async function HomePage() {
                 <FadeIn key={story.id} delay={i * 0.08}>
                 <Link
                   href={`/journal/${story.slug}`}
-                  href={`/journal/${story.slug}`}
                   className="group block space-y-4"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden">
