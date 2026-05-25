@@ -130,7 +130,11 @@ export function StoryForm({ storyId, defaultValues, galleries }: Props) {
         <div data-color-mode="light">
           <MDEditor
             value={content}
-            onChange={(v) => setContent(v ?? "")}
+            onChange={(v) => {
+              const val = v ?? "";
+              setContent(val);
+              setValue("content", val, { shouldValidate: true });
+            }}
             height={400}
             preview="edit"
           />

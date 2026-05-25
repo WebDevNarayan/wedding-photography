@@ -34,23 +34,28 @@ const testimonials = [
 ];
 
 export default async function HomePage() {
-  const [settings, stories, featuredGalleries] = await Promise.all([
+  const [settings, stories, heroGallery, navGalleries] = await Promise.all([
     prisma.siteSettings.findUnique({ where: { id: 1 } }),
     prisma.story.findMany({
       where: { published: true },
       orderBy: { publishedAt: "desc" },
       take: 3,
     }),
-    prisma.gallery.findMany({
+    prisma.gallery.findFirst({
       where: { featured: true, published: true },
       orderBy: { date: "desc" },
-      take: 5,
+      select: { coverImageUrl: true },
+    }),
+    prisma.gallery.findMany({
+      where: { published: true },
+      orderBy: { date: "desc" },
+      take: 4,
       select: { coverImageUrl: true },
     }),
   ]);
 
-  const heroImageUrl = featuredGalleries[0]?.coverImageUrl;
-  const navImages = featuredGalleries.slice(1).map((g) => g.coverImageUrl);
+  const heroImageUrl = heroGallery?.coverImageUrl;
+  const navImages = navGalleries.map((g) => g.coverImageUrl);
 
   return (
     <>

@@ -36,7 +36,7 @@ function Block({
     >
       {image && (
         <motion.div style={{ y }} className="absolute inset-0 scale-125">
-          <Image src={image} alt="" fill className="object-cover" />
+          <Image src={image} alt="" fill priority className="object-cover" />
         </motion.div>
       )}
       <div className="absolute inset-0 bg-black/40 transition-colors duration-500 group-hover:bg-black/55" />
