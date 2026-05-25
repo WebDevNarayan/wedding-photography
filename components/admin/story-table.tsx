@@ -34,7 +34,7 @@ type Story = {
   id: string;
   title: string;
   published: boolean;
-  publishedAt: string | null;
+  publishedAt: Date | string | null;
   gallery: { id: string; title: string } | null;
 };
 

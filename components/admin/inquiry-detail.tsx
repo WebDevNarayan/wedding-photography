@@ -26,11 +26,11 @@ export type Inquiry = {
   name: string;
   email: string;
   phone: string | null;
-  weddingDate: string | null;
+  weddingDate: Date | string | null;
   venue: string | null;
   message: string;
   status: InquiryStatus;
-  createdAt: string;
+  createdAt: Date | string;
 };
 
 const STATUS_STYLES: Record<InquiryStatus, string> = {
