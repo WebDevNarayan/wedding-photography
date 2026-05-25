@@ -9,7 +9,7 @@ const createSchema = z.object({
   slug: z.string().min(1).optional(),
   excerpt: z.string().min(1),
   content: z.string().min(1),
-  coverImageUrl: z.string().optional(),
+  coverImageUrl: z.string(),
   published: z.boolean(),
   publishedAt: z.string().optional(),
   galleryId: z.string().optional(),
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       title,
       slug: finalSlug,
       publishedAt: publishedAt ? new Date(publishedAt) : undefined,
-      galleryId: galleryId || undefined,
+      ...(galleryId ? { gallery: { connect: { id: galleryId } } } : {}),
       ...rest,
     },
   });
