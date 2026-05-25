@@ -1,10 +1,22 @@
 import { v2 as cloudinary } from "cloudinary";
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+if (!cloudName || !apiKey || !apiSecret) {
+  throw new Error(
+    `Missing Cloudinary env vars: ${[
+      !cloudName && "CLOUDINARY_CLOUD_NAME",
+      !apiKey && "CLOUDINARY_API_KEY",
+      !apiSecret && "CLOUDINARY_API_SECRET",
+    ]
+      .filter(Boolean)
+      .join(", ")}`
+  );
+}
+
+cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
 
 type UploadResult = {
   url: string;
@@ -22,7 +34,7 @@ export async function uploadImage(
     const stream = cloudinary.uploader.upload_stream(
       { folder, resource_type: "image" },
       (error, result) => {
-        if (error || !result) return reject(error ?? new Error("Upload failed"));
+        if (error || !result) return reject(error instanceof Error ? error : new Error(error?.message ?? "Upload failed"));
 
         const blurDataUrl = cloudinary.url(result.public_id, {
           transformation: [

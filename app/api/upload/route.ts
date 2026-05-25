@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/session";
 import { uploadImage } from "@/lib/cloudinary";
 
+export const maxDuration = 60;
+
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 
@@ -29,7 +31,8 @@ export async function POST(req: NextRequest) {
   try {
     const result = await uploadImage(file, "wedding-photography");
     return NextResponse.json(result);
-  } catch {
+  } catch (err) {
+    console.error("[upload] Cloudinary error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
