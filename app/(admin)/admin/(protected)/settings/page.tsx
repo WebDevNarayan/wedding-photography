@@ -5,7 +5,16 @@ import { SettingsForm } from "@/components/admin/settings-form";
 export const metadata: Metadata = { title: "Settings" };
 
 export default async function SettingsPage() {
-  const settings = await prisma.siteSettings.findUnique({ where: { id: 1 } });
+  const [settings, galleries] = await Promise.all([
+    prisma.siteSettings.findUnique({ where: { id: 1 } }),
+    prisma.gallery.findMany({
+      where: { published: true },
+      orderBy: { date: "desc" },
+      select: { id: true, title: true, coverImageUrl: true, featured: true },
+    }),
+  ]);
+
+  const featuredGalleryIds = galleries.filter((g) => g.featured).map((g) => g.id);
 
   return (
     <div className="space-y-6">
@@ -15,6 +24,7 @@ export default async function SettingsPage() {
       </div>
 
       <SettingsForm
+        galleries={galleries}
         defaultValues={{
           heroHeadline: settings?.heroHeadline ?? "",
           heroSubheading: settings?.heroSubheading ?? "",
@@ -27,6 +37,7 @@ export default async function SettingsPage() {
           navImageJournal: settings?.navImageJournal ?? undefined,
           navImageInvestment: settings?.navImageInvestment ?? undefined,
           navImageContact: settings?.navImageContact ?? undefined,
+          featuredGalleryIds,
         }}
       />
     </div>

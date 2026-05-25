@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -23,9 +24,17 @@ const schema = z.object({
   navImageJournal: z.string().optional(),
   navImageInvestment: z.string().optional(),
   navImageContact: z.string().optional(),
+  featuredGalleryIds: z.array(z.string()).optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
+
+type GalleryOption = {
+  id: string;
+  title: string;
+  coverImageUrl: string;
+  featured: boolean;
+};
 
 const NAV_IMAGE_FIELDS = [
   { key: "navImageWork",       label: "Work" },
@@ -34,7 +43,13 @@ const NAV_IMAGE_FIELDS = [
   { key: "navImageContact",    label: "Contact" },
 ] as const;
 
-export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormValues> }) {
+export function SettingsForm({
+  defaultValues,
+  galleries,
+}: {
+  defaultValues: Partial<FormValues>;
+  galleries: GalleryOption[];
+}) {
   const [saved, setSaved] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [aboutImagePreview, setAboutImagePreview] = useState(defaultValues.aboutImageUrl ?? "");
@@ -44,6 +59,9 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
     navImageInvestment: defaultValues.navImageInvestment ?? "",
     navImageContact:    defaultValues.navImageContact    ?? "",
   });
+  const [selectedIds, setSelectedIds] = useState<string[]>(
+    defaultValues.featuredGalleryIds ?? []
+  );
 
   const {
     register,
@@ -55,6 +73,14 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
     defaultValues,
   });
 
+  function toggleGallery(id: string) {
+    setSelectedIds((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+      setValue("featuredGalleryIds", next);
+      return next;
+    });
+  }
+
   async function onSubmit(values: FormValues) {
     setServerError(null);
     setSaved(false);
@@ -62,7 +88,7 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
     const res = await fetch("/api/admin/settings", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
+      body: JSON.stringify({ ...values, featuredGalleryIds: selectedIds }),
     });
 
     if (!res.ok) {
@@ -144,6 +170,49 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
       </section>
 
       <section className="space-y-4">
+        <div>
+          <h2 className="font-heading text-lg font-normal tracking-tight">Hero Image Source</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Check one or more galleries. The most recently dated checked gallery's cover photo becomes the full-screen background on the homepage hero.
+          </p>
+        </div>
+        {galleries.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No published galleries yet.</p>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {galleries.map((gallery) => {
+              const checked = selectedIds.includes(gallery.id);
+              return (
+                <label
+                  key={gallery.id}
+                  className={`flex items-center gap-3 rounded-md border p-3 cursor-pointer transition-colors ${
+                    checked ? "border-primary bg-primary/5" : "border-border hover:border-muted-foreground"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleGallery(gallery.id)}
+                    className="h-4 w-4 shrink-0 accent-foreground cursor-pointer"
+                  />
+                  <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded">
+                    <Image
+                      src={gallery.coverImageUrl}
+                      alt={gallery.title}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </div>
+                  <span className="text-sm leading-tight line-clamp-2">{gallery.title}</span>
+                </label>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      <section className="space-y-4">
         <h2 className="font-heading text-lg font-normal tracking-tight">Contact & Social</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
@@ -168,6 +237,14 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
           {isSubmitting ? "Saving…" : "Save settings"}
         </Button>
         {saved && <p className="text-sm text-green-600">Saved successfully</p>}
+        <Link
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto font-sans text-xs uppercase tracking-[0.15em] border-b border-foreground pb-0.5 hover:border-primary hover:text-primary transition-colors"
+        >
+          Preview Homepage →
+        </Link>
       </div>
     </form>
   );

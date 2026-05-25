@@ -15,6 +15,7 @@ const settingsSchema = z.object({
   navImageJournal: z.string().optional(),
   navImageInvestment: z.string().optional(),
   navImageContact: z.string().optional(),
+  featuredGalleryIds: z.array(z.string()).optional(),
 });
 
 export async function GET() {
@@ -35,11 +36,27 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const settings = await prisma.siteSettings.upsert({
-    where: { id: 1 },
-    update: parsed.data,
-    create: { id: 1, ...parsed.data },
-  });
+  const { featuredGalleryIds, ...settingsData } = parsed.data;
+
+  const [settings] = await prisma.$transaction([
+    prisma.siteSettings.upsert({
+      where: { id: 1 },
+      update: settingsData,
+      create: { id: 1, ...settingsData },
+    }),
+    prisma.gallery.updateMany({
+      where: {},
+      data: { featured: false },
+    }),
+    ...(featuredGalleryIds && featuredGalleryIds.length > 0
+      ? [
+          prisma.gallery.updateMany({
+            where: { id: { in: featuredGalleryIds } },
+            data: { featured: true },
+          }),
+        ]
+      : []),
+  ]);
 
   return NextResponse.json(settings);
 }
