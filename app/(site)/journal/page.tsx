@@ -46,7 +46,6 @@ export default async function JournalPage() {
               <FadeIn key={story.id} delay={(i % 2) * 0.08}>
               <Link
                 href={`/journal/${story.slug}`}
-                href={`/journal/${story.slug}`}
                 className="group block space-y-4"
               >
                 <div className="relative aspect-video overflow-hidden">
