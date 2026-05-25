@@ -5,7 +5,7 @@ function requireEnv(key: string): string {
 }
 
 export const env = {
-  DATABASE_URL: requireEnv("DATABASE_URL"),
+  DATABASE_URL: requireEnv("NEON_DATABASE_URL"),
   AUTH_SECRET: requireEnv("AUTH_SECRET"),
   NEXTAUTH_URL: requireEnv("NEXTAUTH_URL"),
   CLOUDINARY_CLOUD_NAME: requireEnv("CLOUDINARY_CLOUD_NAME"),

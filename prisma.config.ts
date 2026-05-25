@@ -11,6 +11,6 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: (process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"])!,
+    url: (process.env["NEON_DIRECT_URL"] ?? process.env["NEON_DATABASE_URL"])!,
   },
 });
