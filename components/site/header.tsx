@@ -41,7 +41,10 @@ export function SiteHeader() {
     };
   }, [menuOpen]);
 
+  const isHomePage = pathname === "/";
   const headerSolid = scrolled || menuOpen;
+  // Only use white text on the home page hero — all other pages have light backgrounds
+  const lightText = isHomePage && !headerSolid;
 
   return (
     <>
@@ -60,7 +63,7 @@ export function SiteHeader() {
           href="/"
           className={cn(
             "font-heading text-sm font-light tracking-[0.28em] uppercase transition-colors duration-300 md:text-base",
-            headerSolid ? "text-foreground" : "text-white"
+            lightText ? "text-white" : "text-foreground"
           )}
         >
           Cara Wei
@@ -77,12 +80,12 @@ export function SiteHeader() {
                 className={cn(
                   "relative text-xs uppercase tracking-[0.22em] transition-colors duration-300 pb-px",
                   "after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100",
-                  headerSolid
-                    ? "text-muted-foreground hover:text-foreground after:bg-foreground"
-                    : "text-white/80 hover:text-white after:bg-white",
-                  active && (headerSolid
-                    ? "text-foreground after:scale-x-100 after:bg-foreground"
-                    : "text-white after:scale-x-100 after:bg-white")
+                  lightText
+                    ? "text-white/80 hover:text-white after:bg-white"
+                    : "text-muted-foreground hover:text-foreground after:bg-foreground",
+                  active && (lightText
+                    ? "text-white after:scale-x-100 after:bg-white"
+                    : "text-foreground after:scale-x-100 after:bg-foreground")
                 )}
               >
                 {label}
@@ -96,7 +99,7 @@ export function SiteHeader() {
           onClick={() => setMenuOpen((o) => !o)}
           className={cn(
             "ml-auto rounded-sm p-1 transition-colors duration-300 md:hidden",
-            headerSolid ? "text-foreground" : "text-white"
+            lightText ? "text-white" : "text-foreground"
           )}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
