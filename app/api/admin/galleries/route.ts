@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { title, slug, date, ...rest } = parsed.data;
+  const { title, slug, date, coverImageUrl, ...rest } = parsed.data;
   const finalSlug = slug ?? slugify(title);
 
   const existing = await prisma.gallery.findUnique({ where: { slug: finalSlug } });
@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
       title,
       slug: finalSlug,
       date: date ? new Date(date) : undefined,
+      ...(coverImageUrl !== undefined && { coverImageUrl }),
       ...rest,
     },
   });
