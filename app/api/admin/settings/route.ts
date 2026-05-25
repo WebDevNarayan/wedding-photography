@@ -11,6 +11,10 @@ const settingsSchema = z.object({
   instagramUrl: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
+  navImageWork: z.string().optional(),
+  navImageJournal: z.string().optional(),
+  navImageInvestment: z.string().optional(),
+  navImageContact: z.string().optional(),
 });
 
 export async function GET() {

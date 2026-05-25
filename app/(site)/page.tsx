@@ -55,7 +55,14 @@ export default async function HomePage() {
   ]);
 
   const heroImageUrl = heroGallery?.coverImageUrl;
-  const navImages = navGalleries.map((g) => g.coverImageUrl);
+  // Use explicit nav images from settings when set, otherwise fall back to gallery date order
+  const fallbackImages = navGalleries.map((g) => g.coverImageUrl);
+  const navImages = [
+    settings?.navImageWork        || fallbackImages[0],
+    settings?.navImageJournal     || fallbackImages[1],
+    settings?.navImageInvestment  || fallbackImages[2],
+    settings?.navImageContact     || fallbackImages[3],
+  ];
 
   return (
     <>

@@ -19,14 +19,31 @@ const schema = z.object({
   instagramUrl: z.string().optional(),
   email: z.string().optional(),
   phone: z.string().optional(),
+  navImageWork: z.string().optional(),
+  navImageJournal: z.string().optional(),
+  navImageInvestment: z.string().optional(),
+  navImageContact: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
+
+const NAV_IMAGE_FIELDS = [
+  { key: "navImageWork",       label: "Work" },
+  { key: "navImageJournal",    label: "Journal" },
+  { key: "navImageInvestment", label: "Investment" },
+  { key: "navImageContact",    label: "Contact" },
+] as const;
 
 export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormValues> }) {
   const [saved, setSaved] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [aboutImagePreview, setAboutImagePreview] = useState(defaultValues.aboutImageUrl ?? "");
+  const [navPreviews, setNavPreviews] = useState<Record<string, string>>({
+    navImageWork:       defaultValues.navImageWork       ?? "",
+    navImageJournal:    defaultValues.navImageJournal    ?? "",
+    navImageInvestment: defaultValues.navImageInvestment ?? "",
+    navImageContact:    defaultValues.navImageContact    ?? "",
+  });
 
   const {
     register,
@@ -96,6 +113,33 @@ export function SettingsForm({ defaultValues }: { defaultValues: Partial<FormVal
               <Image src={aboutImagePreview} alt="About preview" fill className="object-cover" sizes="192px" />
             </div>
           )}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
+          <h2 className="font-heading text-lg font-normal tracking-tight">Homepage Nav Images</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Set a specific photo for each section block. If left empty, the most recent gallery photo is used.
+          </p>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {NAV_IMAGE_FIELDS.map(({ key, label }) => (
+            <div key={key} className="space-y-2">
+              <Label>{label}</Label>
+              <ImageUploader
+                onUpload={(urls) => {
+                  setValue(key, urls[0]);
+                  setNavPreviews((p) => ({ ...p, [key]: urls[0] }));
+                }}
+              />
+              {navPreviews[key] && (
+                <div className="relative h-28 w-full overflow-hidden rounded-md">
+                  <Image src={navPreviews[key]} alt={label} fill className="object-cover" sizes="50vw" />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </section>
 

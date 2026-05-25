@@ -23,6 +23,10 @@ export default async function SettingsPage() {
           instagramUrl: settings?.instagramUrl ?? undefined,
           email: settings?.email ?? undefined,
           phone: settings?.phone ?? undefined,
+          navImageWork: settings?.navImageWork ?? undefined,
+          navImageJournal: settings?.navImageJournal ?? undefined,
+          navImageInvestment: settings?.navImageInvestment ?? undefined,
+          navImageContact: settings?.navImageContact ?? undefined,
         }}
       />
     </div>
