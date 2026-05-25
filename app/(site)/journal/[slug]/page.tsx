@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import { blogPostingSchema } from "@/lib/structured-data";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -61,6 +63,22 @@ export default async function StoryPage({
 
   return (
     <main className="bg-background min-h-screen">
+      <Script
+        id="schema-blogposting"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            blogPostingSchema({
+              title: story.title,
+              excerpt: story.excerpt,
+              imageUrl: story.coverImageUrl,
+              slug,
+              publishedAt: story.publishedAt,
+            })
+          ),
+        }}
+      />
       {/* Hero */}
       <div className="relative w-full h-[70vh] overflow-hidden">
         <Image

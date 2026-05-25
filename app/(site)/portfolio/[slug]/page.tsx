@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { GalleryDetailImages } from "@/components/site/gallery-detail-images";
+import { photographSchema } from "@/lib/structured-data";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -83,6 +85,23 @@ export default async function GalleryDetailPage({
 
   return (
     <main className="min-h-screen bg-background">
+      <Script
+        id="schema-photograph"
+        type="application/ld+json"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            photographSchema({
+              title: gallery.title,
+              description: gallery.description,
+              imageUrl: gallery.coverImageUrl,
+              slug,
+              date: gallery.date,
+              location: gallery.location,
+            })
+          ),
+        }}
+      />
       {/* Hero */}
       <div className="relative h-[85vh] w-full overflow-hidden">
         <Image
